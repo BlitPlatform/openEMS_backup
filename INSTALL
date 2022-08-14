@@ -12,7 +12,7 @@ Install instructions for openEMS:
   - cgal (http://www.cgal.org/)
   - zlib (http://www.zlib.net/)
 
-2) Build:
+2) Build:  NB: Follows this instruction strictly while using cmake .. command . Pass CMAKE_FLAGS along with CMAKE as mentioned in (3)
   - change directory to openEMS
   - build:
     mkdir build
@@ -25,3 +25,6 @@ Install instructions for openEMS:
       - all path informations may be stored in a localConfig.cmake
       - the default "prefix" is /usr/local
 
+3) Use -DCMAKE_INSTALL_PREFIX=/home/jeethesh/OpenEMSProject/openEMS-Project/build for all submodule builds too
+-DFPARSER_ROOT_DIR=/home/jeethesh/OpenEMSProject/openEMS-Project/build 
+-DCSXCAD_ROOT_DIR=/home/jeethesh/OpenEMSProject/openEMS-Project/build

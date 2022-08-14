@@ -35,7 +35,7 @@ IF(EXISTS ${PROJECT_SOURCE_DIR}/.git )
     OUTPUT_VARIABLE GITREV
   )
   set(VERSION ${GITREV})
-  string(STRIP ${VERSION} VERSION)
+  string(STRIP "${VERSION}" VERSION)
   message(STATUS "Found Git repository, ${PROJECT_NAME} version tag: ${VERSION}")
 ENDIF()
 
