@@ -210,6 +210,71 @@ void Engine::Apply2Current()
 		m_Eng_exts.at(n)->Apply2Current();
 }
 
+
+
+
+//------begin new/altered code------
+
+#include<cuda.h>
+#include<cuda_runtime_api.h>
+#include<device_launch_parameters.h>
+#include<device_functions.h>
+#include<cuda_runtime.h>
+#include<cuda_device_runtime_api.h>
+
+
+__global__ void update_voltages_kernel(Matrix<float> current, Matrix<float> voltage){
+
+	int x = (blockIdx.x * blockDim.x) + threadIdx.x;
+	int y = (blockIdx.y * blockDim.y) + threadIdx.y;
+	int z = (blockIdx.z * blockDim.z) + threadIdx.z;
+
+	if((x >= current.x_span)||(y >= current.y_span)||(z >= current.z_span)){return;}
+
+	voltage(x,y,z,0) *=;
+	voltage(x,y,z,0) +=;
+
+	voltage(x,y,z,1) *=;
+	voltage(x,y,z,1) +=;
+
+	voltage(x,y,z,2) *=;
+	voltage(x,y,z,2) +=;
+
+
+
+
+}
+
+
+
+__global__ void update_currents_kernel(Matrix<float> current, Matrix<float> voltage){
+
+	int x = (blockIdx.x * blockDim.x) + threadIdx.x;
+	int y = (blockIdx.y * blockDim.y) + threadIdx.y;
+	int z = (blockIdx.z * blockDim.z) + threadIdx.z;
+
+	if((x >= current.x_span)||(y >= current.y_span)||(z >= current.z_span)){return;}
+
+	current(x,y,z,0) *=;
+	current(x,y,z,0) +=;
+
+	current(x,y,z,1) *=;
+	current(x,y,z,1) +=;
+
+	current(x,y,z,2) *=;
+	current(x,y,z,2) +=;
+
+
+
+
+}
+
+
+
+
+
+
+
 bool Engine::IterateTS(unsigned int iterTS)
 {
 	for (unsigned int iter=0; iter<iterTS; ++iter)
