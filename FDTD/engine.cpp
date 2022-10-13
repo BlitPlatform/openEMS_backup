@@ -253,7 +253,7 @@ __global__ void update_currents_kernel(Matrix<float> current, Matrix<float> volt
 	const int y = (blockIdx.y * blockDim.y) + threadIdx.y;
 	const int z = (blockIdx.z * blockDim.z) + threadIdx.z;
 
-	if((x >= current.x_span)||(y >= current.y_span)||(z >= current.z_span)){return;}
+	if((x >= current.x_span)||(y >= current.y_span - 1)||(z >= current.z_span - 1)){return;}
 
 	current(x,y,z,0) *= ii(x,y,z,0);
 	current(x,y,z,0) += iv(x,y,z,0) * (voltage(x,y,z,2) - voltage(x,y + 1,z,2) - voltage(x,y,z,1) + voltage(x,y,z + 1,1));
