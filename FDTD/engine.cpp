@@ -225,29 +225,33 @@ void Engine::Apply2Current()
 
 __global__ void update_voltages_kernel(Matrix<float> current, Matrix<float> voltage, Matrix<float>vv, Matrix<float>vi){
 
-	int x = (blockIdx.x * blockDim.x) + threadIdx.x;
-	int y = (blockIdx.y * blockDim.y) + threadIdx.y;
-	int z = (blockIdx.z * blockDim.z) + threadIdx.z;
+	const int x = (blockIdx.x * blockDim.x) + threadIdx.x;
+	const int y = (blockIdx.y * blockDim.y) + threadIdx.y;
+	const int z = (blockIdx.z * blockDim.z) + threadIdx.z;
 
 	if((x >= current.x_span)||(y >= current.y_span)||(z >= current.z_span)){return;}
 
+	const bool shift_x = x;
+	const bool shift_y = y;
+	const bool shift_z = z;
+
 	voltage(x,y,z,0) *= vv(x,y,z,0);
-	voltage(x,y,z,0) += vi(x,y,z,0) * (current() - current() - current() + current());
+	voltage(x,y,z,0) += vi(x,y,z,0) * (current(x,y,z,2) - current(x,y - shift_y,z,2) - current(x,y,z,1) + current(x,y,z - shift_z,1));
 
 	voltage(x,y,z,1) *= vv(x,y,z,1);
-	voltage(x,y,z,1) += vi(x,y,z,1) * (current() - current() - current() + current());
+	voltage(x,y,z,1) += vi(x,y,z,1) * (current(x,y,z,0) - current(x,y,z - shift_z,0) - current(x,y,z,2) + current(x - shift_x,y,z,2));
 
 	voltage(x,y,z,2) *= vv(x,y,z,2);
-	voltage(x,y,z,2) += vi(x,y,z,2) * (current() - current() - current() + current());
+	voltage(x,y,z,2) += vi(x,y,z,2) * (current(x,y,z,1) - current(x - shift_x,y,z,1) - current(x,y,z,0) + current(x,y - shift_y,z,0));
 }
 
 
 
 __global__ void update_currents_kernel(Matrix<float> current, Matrix<float> voltage, Matrix<float>ii, Matrix<float>iv){
 
-	int x = (blockIdx.x * blockDim.x) + threadIdx.x;
-	int y = (blockIdx.y * blockDim.y) + threadIdx.y;
-	int z = (blockIdx.z * blockDim.z) + threadIdx.z;
+	const int x = (blockIdx.x * blockDim.x) + threadIdx.x;
+	const int y = (blockIdx.y * blockDim.y) + threadIdx.y;
+	const int z = (blockIdx.z * blockDim.z) + threadIdx.z;
 
 	if((x >= current.x_span)||(y >= current.y_span)||(z >= current.z_span)){return;}
 
