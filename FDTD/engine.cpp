@@ -223,7 +223,8 @@ void Engine::Apply2Current()
 #include<cuda_device_runtime_api.h>
 
 
-__global__ void update_voltages_kernel(Matrix<float> current, Matrix<float> voltage){
+__global__ void update_voltages_kernel(Matrix<float> current, Matrix<float> voltage, 
+										Matrix<float>ii, Matrix<float>iv, Matrix<float>vv, Matrix<float>vi){
 
 	int x = (blockIdx.x * blockDim.x) + threadIdx.x;
 	int y = (blockIdx.y * blockDim.y) + threadIdx.y;
@@ -247,7 +248,8 @@ __global__ void update_voltages_kernel(Matrix<float> current, Matrix<float> volt
 
 
 
-__global__ void update_currents_kernel(Matrix<float> current, Matrix<float> voltage){
+__global__ void update_currents_kernel(Matrix<float> current, Matrix<float> voltage, 
+										Matrix<float>ii, Matrix<float>iv, Matrix<float>vv, Matrix<float>vi){
 
 	int x = (blockIdx.x * blockDim.x) + threadIdx.x;
 	int y = (blockIdx.y * blockDim.y) + threadIdx.y;
