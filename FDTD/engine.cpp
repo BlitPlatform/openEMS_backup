@@ -252,13 +252,13 @@ __global__ void update_currents_kernel(Matrix<float> current, Matrix<float> volt
 	if((x >= current.x_span)||(y >= current.y_span)||(z >= current.z_span)){return;}
 
 	current(x,y,z,0) *= ii(x,y,z,0);
-	current(x,y,z,0) += iv(x,y,z,0) * (voltage() - voltage() - voltage() + voltage());
+	current(x,y,z,0) += iv(x,y,z,0) * (voltage(x,y,z,2) - voltage(x,y + 1,z,2) - voltage(x,y,z,1) + voltage(x,y,z + 1,1));
 
 	current(x,y,z,1) *= ii(x,y,z,1);
-	current(x,y,z,1) += iv(x,y,z,1) * (voltage() - voltage() - voltage() + voltage());
+	current(x,y,z,1) += iv(x,y,z,1) * (voltage(x,y,z,0) - voltage(x,y,z + 1,0) - voltage(x,y,z,2) + voltage(x+1,y,z,2));
 
 	current(x,y,z,2) *= ii(x,y,z,2);
-	current(x,y,z,2) += iv(x,y,z,2) * (voltage() - voltage() - voltage() + voltage());
+	current(x,y,z,2) += iv(x,y,z,2) * (voltage(x,y,z,1) - voltage(x+1,y,z,1) - voltage(x,y,z,0) + voltage(x,y+1,z,0));
 }
 
 
