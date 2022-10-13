@@ -105,6 +105,7 @@ void Engine::Reset()
 	ClearExtensions();
 }
 
+
 void Engine::UpdateVoltages(unsigned int startX, unsigned int numX)
 {
 	unsigned int pos[3];
